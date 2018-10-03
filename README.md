@@ -1,2 +1,6 @@
-# Shop
-Shop project for practice 1 at Web and Services Engineering subject at UCLM Computer Science Degree
+# Sports shop
+
+# Practice 1
+Only develop the front-end without database. Just the view without functionality.
+Status: Working on it.
+
