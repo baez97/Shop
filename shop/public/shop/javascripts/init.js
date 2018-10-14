@@ -3,7 +3,5 @@ window.addEventListener('popstate',
         route();
     }, false);
 $(function () {
-    console.log('Initializing page');
     route();
-    console.log('Page initialized');
 });

@@ -5,9 +5,9 @@ var model = {
 
 for (var i = 0; i < 10; i++) {
     model.products.push({
-        name: "product-"+i,
-        description:"description-"+i,
-        price: i
+        name: "Product-"+i,
+        description:"Some quick example text to build on the card title and make up the bulk of the card's content.",
+        price: (i+1)*10
     })
 }
 

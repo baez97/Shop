@@ -13,12 +13,15 @@ function route() {
     var m;
     if (p == "/shop/views/" || p == "/shop/views" ||  p == "/shop/views/products")
         renderHomePage();
-
-    // else if (m = p.match(/\/shop\/views\/product\/(\d*)$/g)) {
-    //     m = m[m.length - 1].split('/');
-    //     var id = m[m.length - 1];
-    //     renderProduct(id);
-    // }
-    // else renderPageNotFound();
-    console.log(location.href, 'routed')
-}
+    else if (p == "/shop/views/signin")
+        renderSignIn();
+    else if (p == "/shop/views/signup") {
+        renderSignUp();
+    }
+    else if (m = p.match(/\/shop\/views\/user\/(\d*)$/g)) {
+        m = m[m.length - 1].split('/');
+        var id = m[m.length - 1];
+        renderUser(id);
+    }
+    else renderPageNotFound();
+ }
