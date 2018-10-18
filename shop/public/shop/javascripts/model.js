@@ -4,11 +4,12 @@ var model = {
 };
 
 for (var i = 0; i < 10; i++) {
-    model.products.push({
+    const product = {
         name: "Product-"+i,
         description:"Some quick example text to build on the card title and make up the bulk of the card's content.",
-        price: (i+1)*10
-    })
+        price: (i+1)*10,
+    }
+    model.products.push(product)
 }
 
 for (var i = 0; i < 10; i++) {
@@ -56,7 +57,9 @@ for (var i = 0; i < 10; i++) {
             }
     
             order.orderItems.push(item);
-            shoppingCart.shoppingCartItems.push(item);
+            if ( k == j ) {
+                shoppingCart.shoppingCartItems.push(item);
+            } 
         }
         user.userOrders.push(order);
     }
@@ -84,6 +87,7 @@ model.getUser = function (id, callback) {
             }
             orderItems.push(orderItem);
         });
+        orderItems = [];
 
         orders.push({
             number     : order.number,
@@ -153,7 +157,6 @@ model.getProducts = function (callback) {
             price       : product.price
         });
     });
-    console.log(results);
     return callback(results);
 };
 
@@ -162,6 +165,8 @@ model.getProducts = function (callback) {
 // model.getUsers(function(result) {
 //     console.log(result);
 // });
+
+console.log(model.users[0].shoppingCart.shoppingCartItems);
 
 
 

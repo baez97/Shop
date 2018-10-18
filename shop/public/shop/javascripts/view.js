@@ -5,114 +5,79 @@ function render(container, name, context) {
     $('#' + container).html(html);
 }
 function renderHomePage() {
-    var context = {
-        navbar: { 
-            logo       : 'Sports Shop',
-            button11   : 'Show Cart', 
-            button12   : 'Purchase', 
-            button21   : 'Sign In', 
-            button22   : 'Sing Out', 
-            button23   : 'Sign Up', 
-            button24   : 'Profile', 
-        },
-        header: {
-            title       : 'Sports Shop Website',
-            description : 'This is the best Sports Shop in the world. You can purchase any' +
-                          ' sport item that you want with the best prices in the market'
-        },
-        footer: 'SPA created by José Manuel for Web and Service Engineering subject 2018'
-    };
-    render('contents', 'home-page-template', context);
+    render('contents', 'home-page-template', {});
 
     model.getProducts(function(products) {
         var productList = { products: products };
-        render('main', 'product-list-template', productList);
+        render('main-header', 'product-list-template', productList);
     });
-
-    // model.getPostList(function (posts) {
-    //     var postList = { posts: posts };
-    //     render('main', 'post-list-template', postList);
-    // });
 }
 
 function renderSignIn() {
-    var context = {
-        navbar: { 
-            logo       : 'Sports Shop',
-            button11   : 'Show Cart', 
-            button12   : 'Purchase', 
-            button21   : 'Sign In', 
-            button22   : 'Sing Out', 
-            button23   : 'Sign Up', 
-            button24   : 'Profile', 
-        },
-        footer: 'SPA created by José Manuel for Web and Service Engineering subject 2018'
-    };
-    console.log("Rendering sign-in");
-    render('contents', 'sign-template', context);
-    render('main-sign', 'sign-in-template', {});
+    render('contents', 'sign-template', {});
+    render('main-no-header', 'sign-in-template', {});
 }
 
 function renderSignUp() {
-    var context = {
-        navbar: { 
-            logo       : 'Sports Shop',
-            button11   : 'Show Cart', 
-            button12   : 'Purchase', 
-            button21   : 'Sign In', 
-            button22   : 'Sing Out', 
-            button23   : 'Sign Up', 
-            button24   : 'Profile', 
-        },
-        footer: 'SPA created by José Manuel for Web and Service Engineering subject 2018'
-    };
-    render('contents', 'sign-template', context);
-    render('main-sign', 'sign-up-template', {});
+    render('contents', 'sign-template', {});
+    render('main-no-header', 'sign-up-template', {});
 }
 
 function renderShoppingCart() {
-    var context = {
-        navbar: { 
-            logo       : 'Sports Shop',
-            button11   : 'Show Cart', 
-            button12   : 'Purchase', 
-            button21   : 'Sign In', 
-            button22   : 'Sing Out', 
-            button23   : 'Sign Up', 
-            button24   : 'Profile', 
-        },
-        footer: 'SPA created by José Manuel for Web and Service Engineering subject 2018',
-        shopping: 'asdf'
-    };
-    render('contents', 'sign-template', context);
-    render('main-sign', 'shopping-cart-template', {});
+    render('contents', 'sign-template', {});
+    render('main-no-header', 'shopping-cart-template', {});
 }
-// function renderPageNotFound() {
-//     var context = {
-//         header: { title: 'Post browser', subtitle: 'Page not found!' }, footer: 'Handlebars and Bootstrap template'
-//     } 
-//     render('contents', 'page-not-found-template', context);
-// }
 
 function renderUser(id) {
-    var context = {
-        navbar: { 
-            logo       : 'Sports Shop',
-            button11   : 'Show Cart', 
-            button12   : 'Purchase', 
-            button21   : 'Sign In', 
-            button22   : 'Sing Out', 
-            button23   : 'Sign Up', 
-            button24   : 'Profile', 
-        },
-        footer: 'SPA created by José Manuel for Web and Service Engineering subject 2018'
-    };
-
-    render('contents', 'sign-template', context);
-
+    render('contents', 'sign-template', {});
+    
     model.getUser(id, function (user) {
         console.log('Retrieved user', user);
         var userList = { user: user}
-        render('main-sign', 'profile-template', userList); 
+        render('main-no-header', 'profile-template', userList); 
     });
+}
+
+function renderOrder(id_user, id_order) {
+    render('contents', 'sign-template', {});
+    
+    model.getUser(id_user, function(user) {
+        res = {
+            user: user,
+            order: user.userOrders[id_order]
+        }
+        
+        render('main-no-header', 'order-template', res);
+    })
+}
+
+function renderShoppingCart(id) {
+    render('contents', 'sign-template', {});
+    
+    model.getUser(id, function(user) {
+        res = {
+            cart: user.shoppingCart
+        }
+        console.log(res);
+        render('main-no-header', 'shopping-cart-template', res);
+    })
+}
+
+function renderPurchase(id) {
+    render('contents', 'sign-template', {});
+    
+    model.getUser(id, function(user) {
+        res = {
+            cart: user.shoppingCart
+        }
+        console.log(res);
+        render('main-no-header', 'purchase-template', res);
+    })
+}
+
+function renderPageNotFound() {
+    var context = {
+        header: { title: 'Post browser', subtitle: 'Page not found!' }, footer: 'Handlebars and Bootstrap template'
+    } 
+    render('contents', 'page-not-found-template', context);
 }

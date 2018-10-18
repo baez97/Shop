@@ -10,12 +10,21 @@
             background-image:url('../../images/background.jpg');
         }
 
-        .navbar {
-            background-color: black,
+        #main-no-header {
+            padding: 65px 0;
         }
 
-        #main-sign {
-            padding: 65px 0;
+        .gray-form{
+            max-width: 500px;
+            margin: 30px auto;
+            background-color: #eeee;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: gray 0em 0.2em 0.5em;
+        }
+
+        #main-header {
+            padding-bottom: 65px;
         }
 
         .sign-form {
@@ -29,6 +38,11 @@
 
         .label-block {
             display: block;
+        }
+
+        .list-clickable-item:hover {
+            color: blue;
+            text-shadow: gray 0em 0.1em 0.1em;
         }
     </style>
     <!-- Bootstrap configuration -->
@@ -55,9 +69,9 @@
     <!-- Templates -->
     <script id="home-page-template" type="text/x-handlebars-template">
         <div style="display: block;">
-            {{> navbar this.navbar}}
+            {{> navbar }}
             {{> header this.header}}
-            <main id="main">
+            <main id="main-header">
             </main>
             {{> footer this.footer}}
         </div>
@@ -76,7 +90,7 @@
     <script id="sign-template" type="text/x-handlebars-template">
         <div style="display: block;">
             {{> navbar this.navbar}}
-            <main id="main-sign">
+            <main id="main-no-header">
             </main>
             {{> footer this.footer}}
         </div>
@@ -93,7 +107,7 @@
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
             </div>
             <div style="text-align: center">
-                <a href="/shop/views" class="btn btn-primary" role="button" style="max-width: 300px; margin: 0px auto;">Submit</a>
+                <a href="/shop/views" class="btn btn-primary" role="button" style="max-width: 300px; margin: 0px auto;">Sign In</a>
             </div>
         </form>
     </script>
@@ -125,15 +139,147 @@
                 <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Enter password">
             </div>
             <div style="text-align: center">
-                <a href="/shop/views" class="btn btn-primary" role="button" style="max-width: 300px; margin: 0px auto;">Submit</a>
+                <a href="/shop/views" class="btn btn-primary" role="button" style="max-width: 300px; margin: 0px auto;">Sign Up</a>
             </div>
         </form>
     </script>
 
     <script id="profile-template" type="text/x-handlebars-template">
         {{> profile-basic this.user }}
+        <div class="gray-form">
+            <h2 style="text-align: center">Order List</h2>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-4">
+                            Date
+                        </div>
+                        <div class="col-4">
+                            Nº
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            Total
+                        </div>
+                    </div>
+                </li>
+                {{#each this.user.userOrders}}
+                <!-- Date | Number | Total -->
+                <li class="list-group-item">
+                    <div class="row list-clickable-item" onclick="window.location=window.location+'/orders/{{number}}'" style="cursor: pointer;" hover="background-color: black">
+                        <div class="col-4">
+                            <b>{{date}}</b>
+                        </div>
+                        <div class="col-4">
+                            <b>{{number}}</b>
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            <b>{{total}}€</b>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
     </script>
 
+    <script id="order-template" type="text/x-handlebars-template">
+        {{> order-basic this }}
+        <div class="gray-form">
+            <h2 style="text-align: center">Item List</h2>
+            <ul class="list-group">
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-3">
+                            Qty
+                        </div>
+                        <div class="col-2">
+                            Product
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            Price
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            Total
+                        </div>
+                    </div>
+                </li>
+
+                {{#each this.order.orderItems}}
+                <li class="list-group-item">
+                    <div class="row" hover="background-color: black">
+                        <div class="col-3">
+                            <b>{{qty}}</b>
+                        </div>
+                        <div class="col-3">
+                            <b>{{product.name}}</b>
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            <b>{{price}}€</b>
+                        </div>
+                        <div class="col-3" style="text-align: right">
+                            <b>{{total}}€</b>
+                        </div>
+                    </div>
+                </li>
+                {{/each}}
+            </ul>
+        </div>
+    </script>
+
+    <script id="shopping-cart-template" type="text/x-handlebars-template">
+        <div class="gray-form">
+            <div class="row">
+                <div class="col-md-6 text-center">
+                    Total
+                </div>
+                <div class="col-md-6 text-center">
+                    <div style="background-color: white; border-radius: 10px; box-shadow: black 0em 0.1em 0.2em">
+                        <b>{{this.cart.total}}€</b>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gray-form">
+            {{> item-list this.cart.shoppingCartItems}}
+        </div>
+        <div class="gray-form">
+            {{> total-detail-box this.cart}}
+            <div style="text-align: right; padding-top: 15px" >
+                <a href="/shop/views/user/2/purchase" class="btn btn-primary" role="button" style="max-width: 300px; margin: 0px auto;">Purchase</a>
+            </div>
+        </div>
+    </script>
+
+    <script id="purchase-template" type="text/x-handlebars-template">
+        <form class="sign-form">
+            <h2>13/19/2018</h2>
+            <div class="form-group">
+                <label>Address</label>
+                <input type="text" class="form-control" placeholder="Enter address">
+            </div>
+            <div class="form-group">
+                <label>Card Number</label>
+                <input type="text" class="form-control" placeholder="Enter card number">
+            </div>
+            <div class="form-group">
+                <label>Card Holder</label>
+                <input type="text" class="form-control" placeholder="Enter card holder">
+            </div>
+            <div class="form-group">
+                <label for="exampleInputPassword1">Password</label>
+                <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Password">
+            </div>
+        </form>
+        <div class="gray-form">
+            {{> item-list this.cart.shoppingCartItems}}
+        </div>
+        <div class="gray-form">
+            {{> total-detail-box this.cart}}
+            <div style="text-align: right; padding-top: 15px" >
+                <a href="/shop/views/" class="btn btn-success" role="button" style="max-width: 300px; margin: 0px auto;">Purchase</a>
+            </div>
+        </div>
+    </script>
 
     <!-- View -->
     <script src="/shop/javascripts/view.js" type="text/javascript"></script>
