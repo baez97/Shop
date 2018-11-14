@@ -1,5 +1,5 @@
 Handlebars.registerPartial('navbar', `<nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-<a class="navbar-brand" href="/shop/views">Sports Shop</a>
+<a class="navbar-brand" href="/shop/views" onClick="go(event)">Sports Shop</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" 
     aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -9,17 +9,17 @@ Handlebars.registerPartial('navbar', `<nav class="navbar navbar-expand-md navbar
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" ariaexpanded="false">Cart&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="/shop/views/user/2/cart">Show Cart</a>
-                <a class="dropdown-item" href="/shop/views/user/2/purchase">Purchase</a>
+                <a class="dropdown-item" href="/shop/views/user/2/cart" onClick="go(event)">Show Cart</a>
+                <a class="dropdown-item" href="/shop/views/user/2/purchase" onClick="go(event)">Purchase</a>
             </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" ariaexpanded="false">User&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="/shop/views/signin">Sign In</a>
-                <a class="dropdown-item" href="/shop/views">Sign Out</a>
-                <a class="dropdown-item" href="/shop/views/signup">Sign Up</a>
-                <a class="dropdown-item" href="/shop/views/user/1">Profile</a>
+                <a class="dropdown-item" href="/shop/views/signin" onClick="go(event)">Sign In</a>
+                <a class="dropdown-item" href="/shop/views" onClick="go(event)">Sign Out</a>
+                <a class="dropdown-item" href="/shop/views/signup" onClick="go(event)">Sign Up</a>
+                <a class="dropdown-item" href="/shop/views/user/1" onClick="go(event)">Profile</a>
             </div>
         </li>
     </ul>
@@ -69,7 +69,7 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
                     </div>
                 </div>
                 <div class="col text-center">
-                    <a href="/shop/views/user/2/cart" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
+                    <a id="{{_id}}" href="/shop/views/user/2/cart" onClick="addProduct('5be9e0625a3778086b0a1d0a', this.id, event)" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
                 </div>
             </div>
         </div>
@@ -89,16 +89,16 @@ Handlebars.registerPartial('profile-basic', `
 `)
 Handlebars.registerPartial('order-basic', `
     <div class="sign-form">
-        <label class="label-block">Number:        {{order.number}}</label>
-        <label class="label-block">Date:          {{order.date}}</label>
+        <label class="label-block">Number:        {{number}}</label>
+        <label class="label-block">Date:          {{date}}</label>
         <label class="label-block">Name:          {{user.name}}</label>
         <label class="label-block">Surname:       {{user.surname}}</label>
         <label class="label-block">Address:       {{user.address}}</label>
-        <label class="label-block">Card Holder:   {{order.cardHolder}}</label>
-        <label class="label-block">Card Number:   {{order.cardNumber}}</label>
-        <label class="label-block">Subtotal:      {{order.subtotal}}</label>
-        <label class="label-block">Tax:           {{order.tax}}</label>
-        <label class="label-block">Total:         {{order.total}}</label>
+        <label class="label-block">Card Holder:   {{cardHolder}}</label>
+        <label class="label-block">Card Number:   {{cardNumber}}</label>
+        <label class="label-block">Subtotal:      {{subtotal}}</label>
+        <label class="label-block">Tax:           {{tax}}</label>
+        <label class="label-block">Total:         {{total}}</label>
     </div>
 `)
 
@@ -129,7 +129,7 @@ Handlebars.registerPartial('item-list', `
                 <b>{{qty}}</b>
             </div>
             <div class="col-3">
-                <b>{{product.name}}</b>
+                <b>{{orderItemProduct.name}}</b>
             </div>
             <div class="col-3" style="text-align: right">
                 <b>{{total}}€</b>
@@ -140,8 +140,8 @@ Handlebars.registerPartial('item-list', `
                         Delete
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#">Remove 1</a>
-                        <a class="dropdown-item" href="#">Remove All</a>
+                        <a class="dropdown-item" href="#" onClick="go(event)">Remove 1</a>
+                        <a class="dropdown-item" href="#" onClick="go(event)">Remove All</a>
                     </div>
                 </div>
             </div>
@@ -158,7 +158,7 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
-            {{this.subtotal}}
+            <p id="subtotal">{{this.subtotal}}</p>
         </div>
     </div>
 </div>
@@ -168,7 +168,7 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
-            {{this.tax}}
+            <p id="tax">{{this.tax}}</p>
         </div>
     </div>
 </div>
@@ -178,7 +178,7 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
-            <b>{{this.total}}€</b>
+            <p id="total"><b>{{this.total}}€</b></p>
         </div>
     </div>
 </div>`)

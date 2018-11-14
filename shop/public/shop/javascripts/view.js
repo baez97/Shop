@@ -7,10 +7,10 @@ function render(container, name, context) {
 function renderHomePage() {
     render('contents', 'home-page-template', {});
 
-    model.getProducts(function(products) {
-        var productList = { products: products };
-        render('main-header', 'product-list-template', productList);
-    });
+    getProducts()
+        .then( function (products) {
+            render('main-header', 'product-list-template', products);
+        });
 }
 
 function renderSignIn() {
@@ -31,48 +31,38 @@ function renderShoppingCart() {
 function renderUser(id) {
     render('contents', 'sign-template', {});
     
-    model.getUser(id, function (user) {
-        console.log('Retrieved user', user);
-        var userList = { user: user}
-        render('main-no-header', 'profile-template', userList); 
-    });
+    getOrders('5be9e0625a3778086b0a1d0a')
+        .then(function (user) {
+            render('main-no-header', 'profile-template', user);
+        });
 }
 
 function renderOrder(id_user, id_order) {
     render('contents', 'sign-template', {});
     
-    model.getUser(id_user, function(user) {
-        res = {
-            user: user,
-            order: user.userOrders[id_order]
-        }
-        
-        render('main-no-header', 'order-template', res);
-    })
+    getOrder('5be9e0625a3778086b0a1d0a', id_order)
+        .then( function(order) {
+            console.log(order);
+            render('main-no-header', 'order-template', order);
+        })
 }
 
 function renderShoppingCart(id) {
     render('contents', 'sign-template', {});
     
-    model.getUser(id, function(user) {
-        res = {
-            cart: user.shoppingCart
-        }
-        console.log(res);
-        render('main-no-header', 'shopping-cart-template', res);
-    })
+    getShoppingCart('5be9e0625a3778086b0a1d0a')
+        .then(function(cart) {
+            render('main-no-header', 'shopping-cart-template', cart);
+        });
 }
 
 function renderPurchase(id) {
     render('contents', 'sign-template', {});
     
-    model.getUser(id, function(user) {
-        res = {
-            cart: user.shoppingCart
-        }
-        console.log(res);
-        render('main-no-header', 'purchase-template', res);
-    })
+    getShoppingCart('5be9e0625a3778086b0a1d0a')
+        .then(function(cart) {
+            render('main-no-header', 'purchase-template', cart);
+        });
 }
 
 function renderPageNotFound() {
