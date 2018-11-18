@@ -16,8 +16,8 @@ for (var i = 0; i < 10; i++) {
 
     var shoppingCart = {
         subtotal          : i,
-        tax               : 21.0,
-        total             : i*1.21,
+        tax               : i*0.21,
+        total             : i * i*0.21,
         shoppingCartItems : []
     } 
 

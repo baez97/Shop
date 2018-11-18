@@ -52,10 +52,10 @@ mongoose.connect(uri, {useNewUrlParser: true})
         for (var i = 0; i < 10; i++) {
         
             var shoppingCart = new ShoppingCart({
-                subtotal          : i,
-                tax               : 21.0,
-                total             : i*1.21,
-                shoppingCartItems : []
+                subtotal          : 0,
+                tax               : 21,
+                total             : 0,
+                items             : []
             });
         
             var user = new User({
@@ -74,12 +74,12 @@ mongoose.connect(uri, {useNewUrlParser: true})
             for ( j = 0; j < 5; j++ ) {
                 var order = new Order({
                     user       : user,
-                    number     : j,
+                    number     : i*10+j,
                     date       : "date-"+j,
                     address    : "address-"+j,
-                    subtotal   : j,
-                    tax        : j,
-                    total      : j*(j/100 + 1),
+                    subtotal   : 0,
+                    tax        : 21,
+                    total      : 0,
                     cardHolder : "card-holder-"+j,
                     cardNumber : j*100000 + j*233,
                     orderItems : []
@@ -96,7 +96,11 @@ mongoose.connect(uri, {useNewUrlParser: true})
             
                     if ( k == j ) {
                         shoppingCart.items.push(item);
+                        shoppingCart.subtotal += item.total;
+                        shoppingCart.total += (item.total * (1+shoppingCart.tax/100));
                         order.orderItems.push(item);
+                        order.subtotal += item.total;
+                        order.total += (item.total * (1+order.tax/100));
                         promises.push(item.save());
                     } 
                 }

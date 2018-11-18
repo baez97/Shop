@@ -9,17 +9,18 @@ Handlebars.registerPartial('navbar', `<nav class="navbar navbar-expand-md navbar
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" ariaexpanded="false">Cart&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
-                <a class="dropdown-item" href="/shop/views/user/2/cart" onClick="go(event)">Show Cart</a>
-                <a class="dropdown-item" href="/shop/views/user/2/purchase" onClick="go(event)">Purchase</a>
+                <a class="dropdown-item" onClick="Controller.ShoppingCart.clicked(event)">Show Cart</a>
+                <!-- <a class="dropdown-item" href="/shop/views/user/{{this._id}}/purchase" onClick="go(event)">Purchase</a> -->
+                <a class="dropdown-item" onClick="Controller.Purchase.clicked(event)">Purchase</a>
             </div>
         </li>
         <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" ariaexpanded="false">User&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                 <a class="dropdown-item" href="/shop/views/signin" onClick="go(event)">Sign In</a>
-                <a class="dropdown-item" href="/shop/views" onClick="go(event)">Sign Out</a>
+                <a class="dropdown-item" onClick="Controller.Signout.clicked(event)">Sign Out</a>
                 <a class="dropdown-item" href="/shop/views/signup" onClick="go(event)">Sign Up</a>
-                <a class="dropdown-item" href="/shop/views/user/1" onClick="go(event)">Profile</a>
+                <a class="dropdown-item" onClick="Controller.Profile.clicked(event)">Profile</a>
             </div>
         </li>
     </ul>
@@ -28,7 +29,6 @@ Handlebars.registerPartial('navbar', `<nav class="navbar navbar-expand-md navbar
 );
 
 Handlebars.registerPartial('header', `<header>
-<p>Sports Shop</p>
 <div class="jumbotron rounded-0 text-light">
     <div style="max-width: 1280px;" class="container">
         <div class="row">
@@ -69,7 +69,7 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
                     </div>
                 </div>
                 <div class="col text-center">
-                    <a id="{{_id}}" href="/shop/views/user/2/cart" onClick="addProduct('5be9e0625a3778086b0a1d0a', this.id, event)" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
+                    <a id="{{_id}}" onClick="Controller.ProductList.productClicked(this.id, event)" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
                 </div>
             </div>
         </div>
@@ -80,11 +80,11 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
 
 Handlebars.registerPartial('profile-basic', `
     <div class="sign-form">
-        <label class="label-block">Name:        {{name}}</label>
-        <label class="label-block">Surname:     {{surname}}</label>
-        <label class="label-block">BirthDate:   {{birth}}</label>
-        <label class="label-block">Address:     {{address}}</label>
-        <label class="label-block">Email:       {{email}}</label>
+        <label class="label-block">Name:        {{user.name}}</label>
+        <label class="label-block">Surname:     {{user.surname}}</label>
+        <label class="label-block">BirthDate:   {{dateString}}</label>
+        <label class="label-block">Address:     {{user.address}}</label>
+        <label class="label-block">Email:       {{user.email}}</label>
     </div>
 `)
 Handlebars.registerPartial('order-basic', `
@@ -107,13 +107,16 @@ Handlebars.registerPartial('item-list', `
 <ul class="list-group">
     <li class="list-group-item">
         <div class="row">
-            <div class="col-3">
+            <div class="col-2">
                 Qty
             </div>
             <div class="col-3">
                 Product
             </div>
-            <div class="col-3" style="text-align: right">
+            <div class="col-2">
+                Price
+            </div>
+            <div class="col-2" style="text-align: right">
                 Total
             </div>
             <div class="col-3" style="text-align: right">
@@ -125,13 +128,16 @@ Handlebars.registerPartial('item-list', `
     {{#each this}}
     <li class="list-group-item">
         <div class="row" hover="background-color: black">
-            <div class="col-3">
+            <div class="col-2">
                 <b>{{qty}}</b>
             </div>
             <div class="col-3">
                 <b>{{orderItemProduct.name}}</b>
             </div>
-            <div class="col-3" style="text-align: right">
+            <div class="col-2">
+                <b>{{orderItemProduct.price}}€</b>
+            </div>
+            <div class="col-2" style="text-align: right">
                 <b>{{total}}€</b>
             </div>
             <div class="col-3" style="text-align: right">
@@ -140,8 +146,10 @@ Handlebars.registerPartial('item-list', `
                         Delete
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <a class="dropdown-item" href="#" onClick="go(event)">Remove 1</a>
-                        <a class="dropdown-item" href="#" onClick="go(event)">Remove All</a>
+                        <!--<a id="{{product._id}}" class="dropdown-item" onClick="decreaseItem(this.id, event)">Remove 1</a>-->
+                        <!--<a id="{{product._id}}" class="dropdown-item" onClick="removeItem(this.id, event)">Remove All</a>-->
+                        <a id="{{orderItemProduct._id}}" class="dropdown-item" onClick="Controller.ShoppingCart.decreaseItem(this.id, event)">Remove 1</a>
+                        <a id="{{orderItemProduct._id}}" class="dropdown-item" onClick="Controller.ShoppingCart.removeItem(this.id, event)">Remove all</a>
                     </div>
                 </div>
             </div>
@@ -157,7 +165,7 @@ Handlebars.registerPartial("total-detail-box", `
         Subtotal
     </div>
     <div class="col-md-6 text-center">
-        <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
+        <div class="detail-box">
             <p id="subtotal">{{this.subtotal}}</p>
         </div>
     </div>
@@ -167,7 +175,7 @@ Handlebars.registerPartial("total-detail-box", `
         Tax
     </div>
     <div class="col-md-6 text-center">
-        <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
+        <div class="detail-box">
             <p id="tax">{{this.tax}}</p>
         </div>
     </div>
@@ -177,9 +185,25 @@ Handlebars.registerPartial("total-detail-box", `
         Total
     </div>
     <div class="col-md-6 text-center">
-        <div style="background-color: white; box-shadow: black 0em 0.1em 0.2em">
+        <div class="detail-box">
             <p id="total"><b>{{this.total}}€</b></p>
         </div>
     </div>
-</div>`)
+</div>`);
+
+Handlebars.registerPartial('showMessages', `
+<div class="form-group" style="margin-top: 56px">
+{{#if hasMessages}}
+<ul class="list-group ">
+{{#each errors}}
+<li class="list-group-item list-group-item-danger text- left">{{message}}</li>
+{{/each}}
+{{#each infos}}
+<li class="list-group-item list-group-item-success text- left">{{message}}</li>
+{{/each}}
+{{/if}}
+</ul>
+</div>
+`
+);
 

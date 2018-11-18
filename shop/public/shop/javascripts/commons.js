@@ -19,26 +19,26 @@ function route() {
         renderSignUp();
     }
 
-    else if (m = p.match(/\/shop\/views\/user\/(\d*)$/g)) {
+    else if (m = p.match(/\/shop\/views\/user\/(\S*)\/$/g)) {
         m = m[m.length - 1].split('/');
         var id = m[m.length - 1];
         renderUser(id);
     }
-    else if (m = p.match(/\/shop\/views\/user\/(\d*)\/cart$/g)) {
+    else if (m = p.match(/\/shop\/views\/user\/(\S*)\/cart$/g)) {
         m = m[m.length - 1].split('/');
         var id = m[m.length - 2];
         renderShoppingCart(id);
     }
-    else if (m = p.match(/\/shop\/views\/user\/(\d*)\/purchase$/g)) {
+    else if (m = p.match(/\/shop\/views\/user\/(\S*)\/purchase$/g)) {
         m = m[m.length - 1].split('/');
         var id = m[m.length - 2];
         renderPurchase(id);
     }
-    else if (m = p.match(/\/shop\/views\/user\/(\d*)\/orders\/(\d*)$/g)) {
+    else if (m = p.match(/\/shop\/views\/user\/(\S*)\/orders\/(\d*)$/g)) {
         m = m[m.length - 1].split('/');
-        var id_order = m[m.length - 1];
+        var n_order = m[m.length - 1];
         var id_user  = m[m.length - 3];
-        renderOrder(id_user, id_order);
+        renderOrder(id_user, n_order);
     }
     else renderPageNotFound();
  }
