@@ -6,29 +6,9 @@ function render(container, name, context) {
     var html = template(context);
     $('#' + container).html(html);
 }
-// function renderHomePage() {
-//     Passport.profile()
-//     render('contents', 'home-page-template', {});
-
-//     getProducts()
-//         .then(function (products) {
-//             render('main-header', 'product-list-template', products);
-//         });
-// }
-
-// function renderSignIn() {
-//     render('contents', 'sign-template', {});
-//     render('main-no-header', 'sign-in-template', {});
-// }
-
-// function renderSignUp() {
-//     render('contents', 'sign-template', {});
-//     render('main-no-header', 'sign-up-template', {});
-// }
 
 function renderHomePage() {
     var context = Messages.all(); 
-    console.log(context);
     context.hasMessages = context.errors.length | context.infos.length;
     render('contents', 'home-page-template', context);
     getProducts()
@@ -51,7 +31,7 @@ function renderSignIn() {
 function renderSignUp() {
     var context = Messages.all(); 
     context.hasMessages = context.errors.length | context.infos.length;
-    context.user = Controller.SignupForm.getUser(); // console.log('Signup', context); 
+    context.user = Controller.SignupForm.getUser();
     render('contents', 'sign-template', context); 
     render('main-no-header', 'sign-up-template', context);
 }
@@ -65,9 +45,7 @@ function renderUser() {
 
             modelProxy.getOrders(result._id)
             .then(function(user) {
-                let dateString = user.birth.slice(0,10);
-                let profileContext = {user: user, dateString: dateString};
-                render('main-no-header', 'profile-template', profileContext);
+                render('main-no-header', 'profile-template', user);
             })
             .catch( error => {
                 Messages.error(error.responseText);
@@ -80,7 +58,6 @@ function renderUser() {
 }
 
 function renderOrder(id_user, n_order) {
-    console.log(`${n_order}, ${id_user}`);
     Passport.profile()
         .done( (result) => {
             var context = Messages.all(); 
@@ -130,13 +107,10 @@ function renderPurchase(id) {
             var date = new Date();
             Controller.ShoppingCart.loadCart()
                 .then( (cart) => {
-                    console.log(cart);   
                     var purchaseContext = {
                         cart: cart,
-                        dateString: `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`,
                         date: date
                     }
-                    console.log(purchaseContext);
                     render('main-no-header', 'purchase-template', purchaseContext);
                 })
                 .catch( error => {

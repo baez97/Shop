@@ -1,7 +1,6 @@
 var Passport = { content: 'content' };
 
 Passport.signin = function (user) {
-    console.log('Passport signin', user)
     return $.ajax({
         type: "POST",
         url: '/shop/passport/signin',
@@ -11,8 +10,6 @@ Passport.signin = function (user) {
 }
 
 Passport.signup = function (user) {
-    console.log("Passport.signup");
-    console.log(user);
     return $.ajax({
         type: "POST",
         url: '/shop/passport/signup',

@@ -66,68 +66,6 @@ for (var i = 0; i < 10; i++) {
     model.users.push(user);
 }
 
-// model.getUser = function (id, callback) {
-//     var user = model.users[id];
-//     var items = [];
-//     var orderItems = [];
-//     var orders = [];
-
-//     user.userOrders.forEach( order => {
-//         order.orderItems.forEach( item => {
-//             var orderItem = {
-//                 order   : item.order,
-//                 qty     : item.qty,
-//                 price   : item.price,
-//                 total   : item.total,
-//                 product : {
-//                     name        : item.product.name,
-//                     description : item.product.description,
-//                     price       : item.product.price
-//                 }
-//             }
-//             orderItems.push(orderItem);
-//         });
-//         orderItems = [];
-
-//         orders.push({
-//             number     : order.number,
-//             date       : order.date,
-//             address    : order.address,
-//             subtotal   : order.subtotal,
-//             tax        : order.tax,
-//             total      : order.total,
-//             cardHolder : order.cardHolder,
-//             cardNumber : order.cardNumber,
-//             orderItems : orderItems
-//         })
-//     });
-
-//     user.shoppingCart.shoppingCartItems.forEach( item => {
-//         items.push(item);
-//     })
-
-//     var shoppingCart = {
-//         subtotal          : user.shoppingCart.subtotal,
-//         tax               : user.shoppingCart.tax,
-//         total             : user.shoppingCart.total,
-//         shoppingCartItems : items
-//     }
-
-
-//     var result = {
-//         id           : user.id,
-//         name         : user.name,
-//         surname      : user.surname,
-//         email        : user.email,
-//         birth        : user.birth,
-//         address      : user.address,
-//         password     : user.password,
-//         shoppingCart : shoppingCart,
-//         userOrders   : orders
-//     };
-//     return callback(result);
-// };
-
 model.getProduct = function (id, callback) {
     var product = model.products[id];
     var result = {
@@ -159,14 +97,6 @@ model.getProducts = function (callback) {
     });
     return callback(results);
 };
-
-
-
-// model.getUsers(function(result) {
-//     console.log(result);
-// });
-
-console.log(model.users[0].shoppingCart.shoppingCartItems);
 
 
 

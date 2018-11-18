@@ -10,7 +10,6 @@ Handlebars.registerPartial('navbar', `<nav class="navbar navbar-expand-md navbar
             <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" ariaexpanded="false">Cart&nbsp;</a>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdown01">
                 <a class="dropdown-item" onClick="Controller.ShoppingCart.clicked(event)">Show Cart</a>
-                <!-- <a class="dropdown-item" href="/shop/views/user/{{this._id}}/purchase" onClick="go(event)">Purchase</a> -->
                 <a class="dropdown-item" onClick="Controller.Purchase.clicked(event)">Purchase</a>
             </div>
         </li>
@@ -69,7 +68,7 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
                     </div>
                 </div>
                 <div class="col text-center">
-                    <a id="{{_id}}" onClick="Controller.ProductList.productClicked(this.id, event)" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
+                    <a onClick="Controller.ProductList.productClicked('{{_id}}', event)" class="btn btn-dark" style="padding: 10px 30px">Buy</a>
                 </div>
             </div>
         </div>
@@ -80,22 +79,22 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
 
 Handlebars.registerPartial('profile-basic', `
     <div class="sign-form">
-        <label class="label-block">Name:        {{user.name}}</label>
-        <label class="label-block">Surname:     {{user.surname}}</label>
-        <label class="label-block">BirthDate:   {{dateString}}</label>
-        <label class="label-block">Address:     {{user.address}}</label>
-        <label class="label-block">Email:       {{user.email}}</label>
+        <label class="label-block">Name:        {{name}}</label>
+        <label class="label-block">Surname:     {{surname}}</label>
+        <label class="label-block">Birth date:   {{dateFormat birth}}</label>
+        <label class="label-block">Address:     {{address}}</label>
+        <label class="label-block">Email:       {{email}}</label>
     </div>
 `)
 Handlebars.registerPartial('order-basic', `
     <div class="sign-form">
         <label class="label-block">Number:        {{number}}</label>
-        <label class="label-block">Date:          {{date}}</label>
+        <label class="label-block">Date:          {{dateFormat date}}</label>
         <label class="label-block">Name:          {{user.name}}</label>
         <label class="label-block">Surname:       {{user.surname}}</label>
         <label class="label-block">Address:       {{user.address}}</label>
         <label class="label-block">Card Holder:   {{cardHolder}}</label>
-        <label class="label-block">Card Number:   {{cardNumber}}</label>
+        <label class="label-block">Car Number:    {{cardNumber}}</label>
         <label class="label-block">Subtotal:      {{subtotal}}</label>
         <label class="label-block">Tax:           {{tax}}</label>
         <label class="label-block">Total:         {{total}}</label>
@@ -146,10 +145,8 @@ Handlebars.registerPartial('item-list', `
                         Delete
                     </button>
                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                        <!--<a id="{{product._id}}" class="dropdown-item" onClick="decreaseItem(this.id, event)">Remove 1</a>-->
-                        <!--<a id="{{product._id}}" class="dropdown-item" onClick="removeItem(this.id, event)">Remove All</a>-->
-                        <a id="{{orderItemProduct._id}}" class="dropdown-item" onClick="Controller.ShoppingCart.decreaseItem(this.id, event)">Remove 1</a>
-                        <a id="{{orderItemProduct._id}}" class="dropdown-item" onClick="Controller.ShoppingCart.removeItem(this.id, event)">Remove all</a>
+                        <a class="dropdown-item" onClick="Controller.ShoppingCart.decreaseItem('{{orderItemProduct._id}}', event)">Remove 1</a>
+                        <a class="dropdown-item" onClick="Controller.ShoppingCart.removeItem('{{orderItemProduct._id}}', event)">Remove all</a>
                     </div>
                 </div>
             </div>

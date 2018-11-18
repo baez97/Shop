@@ -152,20 +152,6 @@ router.post('/users/:uid/cart/items/:pid', passport.authenticate('jwt', { sessio
     } else {
         return res.status(403).send({success: false, msg: 'Unauthorized.'});
     }
-
-
-    // Item.findById(req.params.pid)
-    //     .then( function (item) {
-    //         item.qty++;
-    //         return item.save();
-    //     })
-    //     .then(function(result) {
-    //         res.json({ok: result});
-    //     })
-    //     .catch(function(e) {
-    //         error(e.message);
-    //         res.status(500).json(e);
-    //     })
 });
 
 router.delete('/users/:uid/cart/clear', passport.authenticate('jwt', { session: false }), function(req, res, next) {
@@ -326,6 +312,7 @@ router.post('/users/:uid/orders', passport.authenticate('jwt', { session: false 
                     .then(function(number) {
                         var o = req.body;
                         o.number = number+1;
+                        o.user = user;
 
                         var order = new Order(o);
                         user.userOrders.push( order );
@@ -348,47 +335,27 @@ router.post('/users/:uid/orders', passport.authenticate('jwt', { session: false 
 router.get('/users/:uid/orders/:number', passport.authenticate('jwt', { session: false }), function(req, res, next) {
     var token = getToken(req.headers);
     if (token) {
-        // Order.findOne({ number: req.params.number })
-        //     .populate([{
-        //         path: 'user',
-        //         model: 'User'
-        //     }, {
-        //         path: 'orderItems',
-        //         model: 'Item',
-        //         populate: {
-        //             path: 'orderItemProduct',
-        //             model: 'Product'
-        //         }
-        //     }])
-        //     .exec( function (err, order) {
-        //         if ( order ) {
-        //             res.json(order);
-        //         } else {
-        //             res.status(500).json(err);
-        //         }
-        //     })
-        User.findOne({ _id: req.params.uid })
-        .populate({
-            path: 'userOrders',
-            model: 'Order',
-            populate: {
+        var ObjectId = require('mongoose').Types.ObjectId; 
+
+        Order.findOne({ number: req.params.number, user: new ObjectId(req.params.uid)})
+            .populate([{
+                path: 'user',
+                model: 'User'
+            }, {
                 path: 'orderItems',
                 model: 'Item',
                 populate: {
                     path: 'orderItemProduct',
                     model: 'Product'
                 }
-            }})
-        .exec( (error, user) => {
-            var order = user.userOrders.find( order => {
-                return order.number == req.params.number;
+            }])
+            .exec( function (err, order) {
+                if ( order ) {
+                    res.json(order);
+                } else {
+                    res.status(500).json(err);
+                }
             })
-            if ( order ) {
-                res.json(order);
-            } else {
-                res.status(500).json(err);
-            }
-        })
     } else {
         return res.status(403).send({success: false, msg: 'Unauthorized.'});
     }

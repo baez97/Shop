@@ -53,8 +53,6 @@ function modelProxy() {
                 }
             })
             .done( (result) => {
-                console.log("Item decreased!");
-                console.log(result);
                 resolve(result);
             })
             .fail( (error) => {
@@ -88,7 +86,6 @@ function modelProxy() {
     }
 
     this.clearShoppingCart = (id) => {
-        console.log("Clearing Shopping Cart");
         var p = new Promise( function(resolve, reject) {
             $.ajax({
                 url: `/shop/rest/users/${id}/cart/clear`,
@@ -150,7 +147,6 @@ function modelProxy() {
     }
 
     this.getOrder = (id, number) => {
-        console.log(`Controller => ${number}, ${id}`);
         var p = new Promise( function(resolve, reject) {
             $.ajax({
                 url: `/shop/rest/users/${id}/orders/${number}`,
@@ -180,7 +176,6 @@ const getShoppingCart = (id) => {
             }
         })
         .done( (result) => {
-            console.log(result);
             resolve(result);
         })
         .fail( (error) => {

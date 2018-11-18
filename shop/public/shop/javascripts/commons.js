@@ -5,10 +5,6 @@ function go(event, url) {
     route();
 }
 function route() {
-    // console.log('Routing', location.href); 
-    // console.log('REMEMBER to change this!'); 
-    // console.log('Pathname', location.pathname);
-    
     var p = location.pathname;
     var m;
     if (p == "/shop/views/" || p == "/shop/views" ||  p == "/shop/views/products")

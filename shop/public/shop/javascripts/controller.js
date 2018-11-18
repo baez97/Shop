@@ -29,7 +29,6 @@ Controller.SigninForm.signin = (event) => {
         return Passport.signin(user)
             .done(function (result) {
                 Messages.info('Welcome ');
-                console.log('Signin success', result)
                 Passport.setToken(result);
                 go(event, '/shop/views/');
             })
@@ -79,13 +78,6 @@ Controller.SignupForm.clearUser = () => {
 }
 
 Controller.SignupForm.validateForm = () => {
-    // var forms = $('.form-control');
-    // for (let i = 0; i < forms.length; i++) {
-    //     if (!forms[i].checkValidity()) {
-    //         valid = false;
-    //         return;
-    //     }
-    // }
     var valid = $('#signup-form')[0].checkValidity();
     $('#signup-form').addClass('was-validated');
     return valid;
@@ -96,22 +88,18 @@ Controller.SignupForm.signupClicked = (event) => {
     var user = Controller.SignupForm.getUser();
     var validForm = Controller.SignupForm.validateForm(); 
     if (validForm) {
-        console.log(validForm);
         var passwordMatch = user.password == user.password2; 
         if (!passwordMatch) {
-            console.log("Password Mismatch");
             Messages.error('Password mismatch');
             go(event, '/shop/views/signup');
             return;
         }
         return Passport.signup(user)
             .done(function (result) {
-                console.log("Signup Success");
                 Messages.info('Signup Success');
                 go(event, '/shop/views/');
             })
             .fail(function (result) {
-                console.log(result);
                 var errors = result.responseJSON.errors
                 if (errors) {
                     var messages = Object.values(errors);
@@ -122,9 +110,7 @@ Controller.SignupForm.signupClicked = (event) => {
                 }
                 go(event, '/shop/views/signup');
             });
-    } else {
-        console.log("I'm here");
-    }
+    } 
 };
 
 var SCController = Controller.ShoppingCart;
@@ -324,7 +310,6 @@ Controller.Profile.clicked = (event) => {
 }
 
 Controller.Order.clicked = (number, event) => {
-    console.log(number);
     Passport.profile()
     .done( result => {
         go(event, `/shop/views/user/${result._id}/orders/${number}`);
