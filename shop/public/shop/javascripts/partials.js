@@ -64,7 +64,7 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
             <div class="row">
                 <div class="col text-center">
                     <div class="text-primary" style="padding: 5px; border-radius: 3px; background-color: white; font-size: 20px">
-                        {{price}} €
+                        {{twoDecimals price}} €
                     </div>
                 </div>
                 <div class="col text-center">
@@ -79,11 +79,11 @@ Handlebars.registerPartial('card', `<div class="col-lg-4 col-md-6 col-sm-12" sty
 
 Handlebars.registerPartial('profile-basic', `
     <div class="sign-form">
-        <label class="label-block">Name:        {{name}}</label>
-        <label class="label-block">Surname:     {{surname}}</label>
-        <label class="label-block">Birth date:   {{dateFormat birth}}</label>
-        <label class="label-block">Address:     {{address}}</label>
-        <label class="label-block">Email:       {{email}}</label>
+        <label class="label-block">Name:        <b>{{name}}</b></label>
+        <label class="label-block">Surname:     <b>{{surname}}</b></label>
+        <label class="label-block">Birth date:  <b>{{dateFormat birth}}</b></label>
+        <label class="label-block">Address:     <b>{{address}}</b></label>
+        <label class="label-block">Email:       <b><i>{{email}}</i></b></label>
     </div>
 `)
 Handlebars.registerPartial('order-basic', `
@@ -95,9 +95,9 @@ Handlebars.registerPartial('order-basic', `
         <label class="label-block">Address:       {{user.address}}</label>
         <label class="label-block">Card Holder:   {{cardHolder}}</label>
         <label class="label-block">Car Number:    {{cardNumber}}</label>
-        <label class="label-block">Subtotal:      {{subtotal}}</label>
-        <label class="label-block">Tax:           {{tax}}</label>
-        <label class="label-block">Total:         {{total}}</label>
+        <label class="label-block">Subtotal:      {{twoDecimals subtotal}} €</label>
+        <label class="label-block">Tax:           {{twoDecimals tax}} €</label>
+        <label class="label-block">Total:         {{twoDecimals total}} €</label>
     </div>
 `)
 
@@ -134,10 +134,10 @@ Handlebars.registerPartial('item-list', `
                 <b>{{orderItemProduct.name}}</b>
             </div>
             <div class="col-2">
-                <b>{{orderItemProduct.price}}€</b>
+                <b>{{twoDecimals orderItemProduct.price}} €</b>
             </div>
             <div class="col-2" style="text-align: right">
-                <b>{{total}}€</b>
+                <b>{{twoDecimals total}} €</b>
             </div>
             <div class="col-3" style="text-align: right">
                 <div class="dropdown">
@@ -163,7 +163,7 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div class="detail-box">
-            <p id="subtotal">{{this.subtotal}}</p>
+            <p id="subtotal">{{twoDecimals this.subtotal}} €</p>
         </div>
     </div>
 </div>
@@ -173,7 +173,7 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div class="detail-box">
-            <p id="tax">{{this.tax}}</p>
+            <p id="tax">{{twoDecimals this.tax}} €</p>
         </div>
     </div>
 </div>
@@ -183,23 +183,23 @@ Handlebars.registerPartial("total-detail-box", `
     </div>
     <div class="col-md-6 text-center">
         <div class="detail-box">
-            <p id="total"><b>{{this.total}}€</b></p>
+            <p id="total"><b>{{twoDecimals this.total}} €</b></p>
         </div>
     </div>
 </div>`);
 
 Handlebars.registerPartial('showMessages', `
 <div class="form-group" style="margin-top: 56px">
-{{#if hasMessages}}
-<ul class="list-group ">
-{{#each errors}}
-<li class="list-group-item list-group-item-danger text- left">{{message}}</li>
-{{/each}}
-{{#each infos}}
-<li class="list-group-item list-group-item-success text- left">{{message}}</li>
-{{/each}}
-{{/if}}
-</ul>
+    {{#if hasMessages}}
+        <ul class="list-group ">
+            {{#each errors}}
+                <li class="list-group-item list-group-item-danger text- left">{{message}}</li>
+            {{/each}}
+            {{#each infos}}
+                <li class="list-group-item list-group-item-success text- left">{{message}}</li>
+            {{/each}}
+        </ul>
+    {{/if}}
 </div>
 `
 );

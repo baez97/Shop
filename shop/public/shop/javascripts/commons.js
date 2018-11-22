@@ -15,11 +15,6 @@ function route() {
         renderSignUp();
     }
 
-    else if (m = p.match(/\/shop\/views\/user\/(\S*)\/$/g)) {
-        m = m[m.length - 1].split('/');
-        var id = m[m.length - 1];
-        renderUser(id);
-    }
     else if (m = p.match(/\/shop\/views\/user\/(\S*)\/cart$/g)) {
         m = m[m.length - 1].split('/');
         var id = m[m.length - 2];
@@ -35,6 +30,11 @@ function route() {
         var n_order = m[m.length - 1];
         var id_user  = m[m.length - 3];
         renderOrder(id_user, n_order);
+    }
+    else if (m = p.match(/\/shop\/views\/user\/(\S*)$/g)) {
+        m = m[m.length - 1].split('/');
+        var id = m[m.length - 1];
+        renderUser(id);
     }
     else renderPageNotFound();
  }

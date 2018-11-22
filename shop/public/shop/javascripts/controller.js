@@ -276,7 +276,7 @@ Controller.ProductList.productClicked = (pid, event) => {
         modelProxy.addProduct(result._id, pid)
         .then ( (result ) => {
             Messages.info("Product Added");
-            go(event, `/shop/views/user/${result._id}/cart`);
+            go(event, `/shop/views/`);
         })
     })
     .fail( error => {
